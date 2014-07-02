@@ -115,7 +115,7 @@ class ThreadProgress(object):
 
 
 class TodoExtractor(object):
-    def __init__(self, settings, filepaths, dirpaths, ignored_dirs, ignored_file_patterns, 
+    def __init__(self, settings, filepaths, dirpaths, ignored_dirs, ignored_file_patterns,
                  file_counter):
         self.filepaths = filepaths
         self.dirpaths = dirpaths
@@ -213,7 +213,7 @@ class TodoRenderer(object):
 
     @property
     def view(self):
-        existing_results = [v for v in self.window.views() 
+        existing_results = [v for v in self.window.views()
                             if v.name() == self.view_name and v.is_scratch()]
         if existing_results:
             v = existing_results[0]
@@ -225,9 +225,9 @@ class TodoRenderer(object):
         return v
 
     def format(self, messages):
-        """Yield lines for rendering into results view. Includes headers and 
+        """Yield lines for rendering into results view. Includes headers and
         blank lines.
-        Lines are returned in the form (type, content, [data]) where type is either 
+        Lines are returned in the form (type, content, [data]) where type is either
         'header', 'whitespace' or 'result'
         """
         key_func = lambda m: m['match'].type
@@ -240,7 +240,7 @@ class TodoRenderer(object):
                 for idx, m in enumerate(matches, 1):
                     msg = m['match'].msg.decode('utf8', 'ignore') ## Don't know the file encoding
                     filepath = path.basename(m['filepath'])
-                    line = u"{idx}. {filepath}:{linenum} {msg}".format(
+                    line = u"{idx:4d}. {filepath}:{linenum} {msg}".format(
                         idx=idx, filepath=filepath, linenum=m['linenum'], msg=msg)
                     yield ('result', line, m)
 
@@ -331,7 +331,7 @@ class TodoCommand(sublime_plugin.TextCommand):
     def search_paths(self, window, open_files_only=False):
         """Return (filepaths, dirpaths)"""
         return (
-            [view.file_name() for view in window.views() if view.file_name()], 
+            [view.file_name() for view in window.views() if view.file_name()],
             window.folders() if not open_files_only else []
         )
 
@@ -355,7 +355,7 @@ class TodoCommand(sublime_plugin.TextCommand):
         exclude_file_patterns = [fnmatch.translate(patt) for patt in exclude_file_patterns]
 
         file_counter = FileScanCounter()
-        extractor = TodoExtractor(settings, filepaths, dirpaths, ignored_dirs, 
+        extractor = TodoExtractor(settings, filepaths, dirpaths, ignored_dirs,
                                   exclude_file_patterns, file_counter)
         renderer = TodoRenderer(settings, window, file_counter)
 
@@ -411,7 +411,7 @@ class GotoComment(sublime_plugin.TextCommand):
         selection = int(self.view.settings().get('selected_result', -1))
         ## Get the region
         selected_region = self.view.get_regions('results')[selection]
-        ## Convert region to key used in result_regions (this is tedious, but 
+        ## Convert region to key used in result_regions (this is tedious, but
         ##    there is no other way to store regions with associated data)
         data = self.view.settings().get('result_regions')['{0},{1}'.format(selected_region.a, selected_region.b)]
         self.log.debug(u'Goto comment at {filepath}:{linenum}'.format(**data))
