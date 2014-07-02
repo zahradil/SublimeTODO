@@ -3,12 +3,12 @@
 A Sublime Text 2 plugin to extract and list TODO comments from open files and 
 project folders.
 
-Take a look at [this screencast](http://webdesign.tutsplus.com/tutorials/applications/quick-tip-streamline-your-todo-lists-in-sublime-text-2/) (courtesy of Shannon Huffman) for an overview.
+Originally taken from https://github.com/robcowie/SublimeTODO and slightly customized.
 
 
 # Install
 
-The preferred method is to use the [Sublime Package Manager](http://wbond.net/sublime_packages/package_control). Alternatively, checkout from github:
+Checkout from github and copy to proper Packages directory:
 
 ```sh
 $ cd Sublime Text 2/Packages
@@ -34,24 +34,14 @@ See an example user settings file [here](https://gist.github.com/2049887).
 ## Adding comment patterns
 
 Extraction uses regular expressions that return one match group 
-representing the message. Default patterns are provided for `TODO`, `NOTE`, `FIXME` 
-and `CHANGED` comments.
-To override or provide more patterns, add `patterns` to user settings, e.g.
-
-```javascript
-"patterns": {
-    "TODO": "TODO[\\s]*?:+(?P<todo>.*)$",
-    "NOTE": "NOTE[\\s]*?:+(?P<note>.*)$",
-    "FIXME": "FIX ?ME[\\s]*?:+(?P<fixme>\\S.*)$",
-    "CHANGED": "CHANGED[\\s]*?:+(?P<changed>\\S.*)$"
-}
-```
+representing the message. Default patterns are provided for `BUG`, `TODO`, `NOTE`, `FIXME` 
+and `CHANGED` comments. 
 
 Note that the pattern _must_ provide at least one named group which will be used to group the comments in results.
 
-By default, searching is not case sensitive. You can change this behaviour by adding 
+By default, searching **is case sensitive**. You can change this behaviour by adding 
 
-    "case_sensitive": true
+    "case_sensitive": false
 
 to the todo settings object.
 
@@ -96,13 +86,11 @@ Both are triggered from the command palette. No default key bindings are provide
 
 ## Navigating results
 
-Results can be navigated by keyboard and mouse:
+Results can be navigated by keyboard only:
 
  * `n`ext, `p`revious, `c`lear, `enter`
- * `alt-double click` (`shift-double click` in Linux)
 
- Note that due to the lack of support for context in mousemaps right now,
- alt-double click will trigger in _any_ document, though it should be a no-op.
+ Note: mouse support was dropped in this fork.
 
 # License
 
