@@ -417,30 +417,3 @@ class GotoComment(sublime_plugin.TextCommand):
         self.log.debug(u'Goto comment at {filepath}:{linenum}'.format(**data))
         new_view = self.view.window().open_file(data['filepath'])
         do_when(lambda: not new_view.is_loading(), lambda: new_view.run_command("goto_line", {"line": data['linenum']}))
-
-
-class MouseGotoComment(sublime_plugin.TextCommand):
-    def __init__(self, *args):
-        self.log = logging.getLogger('SublimeTODO.nav')
-        super(MouseGotoComment, self).__init__(*args)
-
-    def highlight(self, region):
-        target = region.cover(region)
-        self.view.add_regions('selection', [target], 'selected', 'dot')
-        self.view.show(target)
-
-    def get_result_region(self, pos):
-        line = self.view.line(pos)
-        return line
-
-    def run(self, edit):
-        if not self.view.settings().get('result_regions'):
-            return
-        ## get selected line
-        pos = self.view.sel()[0].end()
-        result = self.get_result_region(pos)
-        self.highlight(result)
-        data = self.view.settings().get('result_regions')['{0},{1}'.format(result.a, result.b)]
-        self.log.debug(u'Goto comment at {filepath}:{linenum}'.format(**data))
-        new_view = self.view.window().open_file(data['filepath'])
-        do_when(lambda: not new_view.is_loading(), lambda: new_view.run_command("goto_line", {"line": data['linenum']}))
