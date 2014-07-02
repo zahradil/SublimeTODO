@@ -27,10 +27,15 @@ DEFAULT_SETTINGS = {
     'result_title': 'TODO Results',
 
     'core_patterns': {
-        'TODO': r'TODO[\s]*?:+(?P<todo>.*)$',
-        'NOTE': r'NOTE[\s]*?:+(?P<note>.*)$',
+        "BUG": "BUG[(]*.*[)]*:+(?P<bug>.*)$",
+        "CHANGED": "CHANGED[(]*.*[)]*:+(?P<changed>\\S.*)$",
+        # "FIXME": "FIXME[(]*.*[)]*:+(?P<fixme>\\S.*)$",
+        "NOTE": "NOTE[(]*.*[)]*:+(?P<note>.*)$",
+        "TODO": "TODO[(]*.*[)]*:+(?P<todo>.*)$",
+        # 'TODO': r'TODO[\s]*?:+(?P<todo>.*)$',
+        # 'NOTE': r'NOTE[\s]*?:+(?P<note>.*)$',
         'FIXME': r'FIX ?ME[\s]*?:+(?P<fixme>.*)$',
-        'CHANGED': r'CHANGED[\s]*?:+(?P<changed>.*)$'
+        # 'CHANGED': r'CHANGED[\s]*?:+(?P<changed>.*)$',
     },
 
     'patterns': {}
@@ -166,7 +171,7 @@ class TodoExtractor(object):
     def extract(self):
         """"""
         message_patterns = '|'.join(self.patterns.values())
-        case_sensitivity = 0 if self.settings.get('case_sensitive', False) else re.IGNORECASE
+        case_sensitivity = 0 if self.settings.get('case_sensitive', True) else re.IGNORECASE
         patt = re.compile(message_patterns, case_sensitivity)
         for filepath in self.search_targets():
             try:
